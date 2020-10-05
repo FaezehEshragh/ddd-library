@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" th:action="@{/borrow}"  th:object="${borrowInfoDto}">
+<!--    <span th:text="BookNumber">Book Number</span>-->
+<!--    <input name="bookNumber" type="text" th:value="${borrowInfoDto.bookNumber}" /><br/>-->
+
+    <label for="BookNumber">Book Number: </label>
+    <input type="text" th:field="*{bookNumber}"/><br/>
+
+<!--    <span th:text="MemberNumber">Member Number</span>-->
+<!--    <input name="memberNumber" type="text" th:value="${borrowInfoDto.memberNumber}" /><br/>-->
+
+    <label for="MemberNumber">Member Number: </label>
+    <input type="text" th:field="*{memberNumber}"/><br/>
+
+
+<!--    <span th:text="Date">Date</span>-->
+<!--    <input name="date" type="text" th:value="${borrowInfoDto.borrowDate}" /><br/>-->
+
+
+<!--    <label for="Date">Date: </label>-->
+<!--    <input type="text" th:field="*{borrowDate}"/><br/>-->
+
+
+    <input class="borrow-button" type="submit" name="borrow" value="Borrow"/>
+</form>
+</body>
+</html>
