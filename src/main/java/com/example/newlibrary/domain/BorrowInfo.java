@@ -15,7 +15,7 @@ import java.util.List;
 
 @Data
 @Entity
-@EntityListeners(SpringEntityListener.class)
+//@EntityListeners(SpringEntityListener.class)
 @Slf4j
 public class BorrowInfo {
 
@@ -30,7 +30,8 @@ public class BorrowInfo {
 
     Date date;
 
-
+    public BorrowInfo() {
+    }
 
     public BorrowInfo(String bookNumber, String memberNumber, Date borrowDate) {
         setBookNumber(bookNumber);
@@ -38,24 +39,16 @@ public class BorrowInfo {
         setDate(borrowDate);
     }
 
-    public void addInfo(Book book, Member member, Date borrowDate) {
-        setDate(borrowDate);
-        if(book.isAvailable() && member.canBorrow() && findBooksBorrowedByMember(memberNumber).size()<member.getAllowed()){
-            setBookNumber(book.getNumber());
-            setMemberNumber(member.getNumber());
-            book.setAvailable(false);
-            log.info("book borrowed: "+ bookNumber);
-        }else{
-            log.info("not able to borrow the book!");
-        }
-    }
-    public List<BorrowInfo> findBooksBorrowedByMember(String memberNumber){
+//    public void addInfo(Book book, Member member, Date borrowDate) {
+//        setDate(borrowDate);
+//        if(book.isAvailable() && member.canBorrow() && findBooksBorrowedByMember(memberNumber).size()<member.getAllowed()){
+//            setBookNumber(book.getNumber());
+//            setMemberNumber(member.getNumber());
+//            book.setAvailable(false);
+//            log.info("book borrowed: "+ bookNumber);
+//        }else{
+//            log.info("not able to borrow the book!");
+//        }
+//    }
 
-        List<BorrowInfo> borrowInfoList=new ArrayList<BorrowInfo>();
-        Iterable<BorrowInfo> booksIterable=borrowInfoRepository.findAllByMemberNumber(memberNumber);
-//        bookList= StreamSupport.stream(booksIterable.spliterator(), false)
-//                .collect(Collectors.toList());
-        booksIterable.forEach(borrowInfoList::add);
-        return borrowInfoList;
-    }
 }

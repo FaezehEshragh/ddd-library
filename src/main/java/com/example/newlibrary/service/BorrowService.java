@@ -48,15 +48,31 @@ public class BorrowService {
         Member member=memberRepository.findByNumber(memberNumber)
                 .orElseThrow(() -> new BookNotFoundException(memberNumber));
         BorrowInfo borrowInfo=new BorrowInfo();
-        borrowInfo.addInfo(book,member,borrowInfoDTO.getBorrowDate());
-        if(borrowInfo.getBookNumber()!=null) {
-//            bookRepository.save(book);
-//            member.getBorrowedBooks().add(book);
-//            memberRepository.save(member);
-            borrowInfoRepository.save(borrowInfo);
+//        borrowInfo.addInfo(book,member,borrowInfoDTO.getBorrowDate());
+        if(book.isAvailable() && member.canBorrow() && findBooksBorrowedByMember(memberNumber).size()<member.getAllowed()){
+            borrowInfo.setBookNumber(book.getNumber());
+            borrowInfo.setMemberNumber(member.getNumber());
+            book.setAvailable(false);
+            log.info("book borrowed: "+ bookNumber);
+        }else{
+            log.info("not able to borrow the book!");
         }
+//        if(borrowInfo.getBookNumber()!=null) {
+////            bookRepository.save(book);
+////            member.getBorrowedBooks().add(book);
+////            memberRepository.save(member);
+//            borrowInfoRepository.save(borrowInfo);
+//        }
         return borrowInfo;
      }
+    public List<BorrowInfo> findBooksBorrowedByMember(String memberNumber){
 
+        List<BorrowInfo> borrowInfoList=new ArrayList<BorrowInfo>();
+        Iterable<BorrowInfo> booksIterable=borrowInfoRepository.findAllByMemberNumber(memberNumber);
+//        bookList= StreamSupport.stream(booksIterable.spliterator(), false)
+//                .collect(Collectors.toList());
+        booksIterable.forEach(borrowInfoList::add);
+        return borrowInfoList;
+    }
 
 }
