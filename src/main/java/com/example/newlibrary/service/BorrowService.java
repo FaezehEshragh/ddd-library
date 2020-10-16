@@ -1,7 +1,7 @@
 package com.example.newlibrary.service;
 
 import com.example.newlibrary.domain.Book;
-import com.example.newlibrary.domain.BorrowInfo;
+import com.example.newlibrary.domain.BorrowInfoEntity;
 import com.example.newlibrary.domain.Member;
 import com.example.newlibrary.service.dto.BorrowInfoDTO;
 import com.example.newlibrary.service.exception.BookNotFoundException;
@@ -11,9 +11,6 @@ import com.example.newlibrary.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -40,39 +37,24 @@ public class BorrowService {
     }
 
 
-    public BorrowInfo borrowBook(BorrowInfoDTO borrowInfoDTO) {
+    public BorrowInfoEntity borrowBook(BorrowInfoDTO borrowInfoDTO) {
         String bookNumber=borrowInfoDTO.getBookNumber();
         Book book= bookRepository.findByNumber(bookNumber)
                 .orElseThrow(() -> new BookNotFoundException(bookNumber));
         String memberNumber=borrowInfoDTO.getMemberNumber();
         Member member=memberRepository.findByNumber(memberNumber)
                 .orElseThrow(() -> new BookNotFoundException(memberNumber));
-        BorrowInfo borrowInfo=new BorrowInfo();
-//        borrowInfo.addInfo(book,member,borrowInfoDTO.getBorrowDate());
-        if(book.isAvailable() && member.canBorrow() && findBooksBorrowedByMember(memberNumber).size()<member.getAllowed()){
-            borrowInfo.setBookNumber(book.getNumber());
-            borrowInfo.setMemberNumber(member.getNumber());
-            book.setAvailable(false);
-            log.info("book borrowed: "+ bookNumber);
-        }else{
-            log.info("not able to borrow the book!");
-        }
-//        if(borrowInfo.getBookNumber()!=null) {
+        BorrowInfoEntity borrowInfoEntity =new BorrowInfoEntity();
+        borrowInfoEntity.addInfo(book,member,borrowInfoDTO.getBorrowDate());
+
+//        if(borrowInfoEntity.getBookNumber()!=null) {
 ////            bookRepository.save(book);
 ////            member.getBorrowedBooks().add(book);
 ////            memberRepository.save(member);
-//            borrowInfoRepository.save(borrowInfo);
+//            borrowInfoRepository.save(borrowInfoEntity);
 //        }
-        return borrowInfo;
+        return borrowInfoEntity;
      }
-    public List<BorrowInfo> findBooksBorrowedByMember(String memberNumber){
 
-        List<BorrowInfo> borrowInfoList=new ArrayList<BorrowInfo>();
-        Iterable<BorrowInfo> booksIterable=borrowInfoRepository.findAllByMemberNumber(memberNumber);
-//        bookList= StreamSupport.stream(booksIterable.spliterator(), false)
-//                .collect(Collectors.toList());
-        booksIterable.forEach(borrowInfoList::add);
-        return borrowInfoList;
-    }
 
 }

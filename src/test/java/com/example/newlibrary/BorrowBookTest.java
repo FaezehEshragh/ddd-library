@@ -1,7 +1,7 @@
 package com.example.newlibrary;
 
 import com.example.newlibrary.domain.Book;
-import com.example.newlibrary.domain.BorrowInfo;
+import com.example.newlibrary.domain.BorrowInfoEntity;
 import com.example.newlibrary.domain.Member;
 import com.example.newlibrary.service.dto.BorrowInfoDTO;
 import com.example.newlibrary.repository.BookRepository;
@@ -49,12 +49,12 @@ public class BorrowBookTest {
         when(memberRepository.findByNumber("testMember111")).thenReturn(java.util.Optional.of(mockMember));
         //</editor-fold...>
         //execute
-        BorrowInfo borrowInfo=borrowService.borrowBook(borrowInfoDTO);
+        BorrowInfoEntity borrowInfoEntity =borrowService.borrowBook(borrowInfoDTO);
 
         //verify
         assertEquals(false,mockBook.isAvailable());
-        assertEquals("testBook111",borrowInfo.getBookNumber());
-        assertEquals("testMember111",borrowInfo.getMemberNumber());
+        assertEquals("testBook111", borrowInfoEntity.getBookNumber());
+        assertEquals("testMember111", borrowInfoEntity.getMemberNumber());
 
     }
 
