@@ -42,6 +42,7 @@ public class BorrowInfoEntity extends BorrowInfo {
             setBookNumber(book.getNumber());
             setMemberNumber(member.getNumber());
             book.setAvailable(false);
+            bookRepository.save(book);
             borrowInfoRepository.save(this);
             log.info("book borrowed: "+ bookNumber);
         }else{
