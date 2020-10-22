@@ -35,8 +35,6 @@ public class BorrowController {
     @PostMapping ()
     public String borrowBook(@ModelAttribute("borrowInfoDto") BorrowInfoDTO borrowInfoDTO){
         borrowService.borrowBook(borrowInfoDTO);
-
-
         return "redirect:/";
     }
 
