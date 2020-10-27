@@ -4,7 +4,7 @@ class book extends Component {
     books: []
   };
 
-  async componentDidMo11unt() {
+  async componentDidMount() {
     const response = await fetch('/books');
     const body = await response.json();
     this.setState({ books: body });
@@ -12,17 +12,16 @@ class book extends Component {
 
 
   render() {
-    const groups = this.state.books;
+    const books = this.state.books;
 
     return (
         <div className="App">
           <header className="App-header">
-            {/*<img src={logo} className="App-logo" alt="logo" />*/}
             <div className="App-intro">
               <h2>Book List</h2>
-              {groups.map(group =>
-                  <div key={group.id}>
-                    {group.name}
+              {books.map(book =>
+                  <div key={book.id}>
+                    {book.name}
                   </div>
               )}
             </div>
